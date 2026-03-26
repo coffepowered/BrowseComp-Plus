@@ -1,6 +1,7 @@
 # Docs
 
 To reproduce results from BrowseComp-Plus, you can refer to the following docs for running the various search agents:
+- [OpenRouter](openrouter.md) — cheapest way to get started (free/cheap models via OpenRouter gateway)
 - [OpenAI API](openai.md)
 - [Gemini API](gemini.md)
 - [Anthropic API](anthropic.md)
