@@ -21,7 +21,7 @@ import os
 import sys
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 import openai
@@ -319,7 +319,7 @@ def _persist_response(
         "result": normalized_results,
     }
 
-    ts = datetime.utcnow().strftime("%Y%m%dT%H%M%S%fZ")
+    ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
     filename = os.path.join(str(out_dir), f"run_{ts}.json")
     with open(filename, "w", encoding="utf-8") as f:
         json.dump(normalized_record, f, indent=2, default=str)
@@ -411,23 +411,33 @@ def _process_tsv_dataset(
             )
         except Exception as exc:
             print(f"[Error] Query id={qid} failed: {exc}")
-            sys.exit(1)
+            raise
 
     if args.num_threads <= 1:
         with tqdm(remaining, desc="Queries", unit="query") as pbar:
             for qid, qtext in pbar:
                 _handle_single_query(qid, qtext, pbar)
     else:
+        errors: list[str] = []
         with (
             ThreadPoolExecutor(max_workers=args.num_threads) as executor,
             tqdm(total=len(remaining), desc="Queries", unit="query") as pbar,
         ):
-            futures = [
-                executor.submit(_handle_single_query, qid, qtext, pbar)
+            futures = {
+                executor.submit(_handle_single_query, qid, qtext, pbar): qid
                 for qid, qtext in remaining
-            ]
-            for _ in as_completed(futures):
+            }
+            for future in as_completed(futures):
                 pbar.update(1)
+                try:
+                    future.result()
+                except Exception as exc:
+                    errors.append(f"Query {futures[future]}: {exc}")
+        if errors:
+            print(f"\n[Error] {len(errors)} queries failed:")
+            for err in errors:
+                print(f"  - {err}")
+            sys.exit(1)
 
 
 # ╭───────────────────────────────────────────────────────────────────────╮

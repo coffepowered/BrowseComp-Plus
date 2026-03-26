@@ -21,9 +21,9 @@ client (`search_agent/openrouter_client.py`) that works out of the box.
 
 | Model | OpenRouter ID | Notes |
 |-------|--------------|-------|
-| **Qwen3-235B-A22B** (free) | `qwen/qwen3-235b-a22b:free` | Free Chinese MoE thinking model. Good function-calling. Default. |
-| **DeepSeek-V3-0324** | `deepseek/deepseek-chat-v3-0324` | Very cheap Chinese model with strong reasoning. |
-| **DeepSeek-R1-0528** | `deepseek/deepseek-r1-0528` | Cheap Chinese reasoning/thinking model. |
+| **Qwen3-235B-A22B** (free) | `qwen/qwen3-235b-a22b:free` | Free MoE thinking model by Alibaba. Good function-calling. Default. |
+| **DeepSeek-V3-0324** | `deepseek/deepseek-chat-v3-0324` | Very cheap model by DeepSeek with strong reasoning. |
+| **DeepSeek-R1-0528** | `deepseek/deepseek-r1-0528` | Cheap reasoning/thinking model by DeepSeek. |
 | **GPT-4.1 mini** | `openai/gpt-4.1-mini` | Affordable OpenAI mini model. |
 | **Gemini 2.5 Flash** | `google/gemini-2.5-flash-preview-05-20` | Cheap and fast. |
 
