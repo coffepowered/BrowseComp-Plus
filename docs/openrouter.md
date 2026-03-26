@@ -1,9 +1,10 @@
 # Running with OpenRouter
 
 [OpenRouter](https://openrouter.ai/) provides a single API gateway to hundreds
-of models — including many **free** and very cheap options.  Because OpenRouter
-exposes an OpenAI-compatible Chat Completions endpoint, we ship a dedicated
-client (`search_agent/openrouter_client.py`) that works out of the box.
+of models — including many **free** and very cheap options.  OpenRouter exposes
+an OpenAI-compatible [Responses API](https://openrouter.ai/docs/api/reference/responses/overview)
+(beta), so our client (`search_agent/openrouter_client.py`) reuses the same
+Responses API logic as `openai_client.py` — just pointed at a different base URL.
 
 ## Prerequisites
 
@@ -140,4 +141,4 @@ python search_agent/openrouter_client.py --help
 | `--snippet-max-tokens` | `512` | Tokens per snippet |
 | `--k` | `5` | Top-k results per search |
 | `--get-document` | `false` | Also enable the `get_document` tool |
-| `--verbose` | `false` | Verbose logging |
+| `--reasoning-effort` | *(none)* | `low`, `medium`, or `high` (for reasoning models) |
